@@ -11,6 +11,11 @@ namespace SpaceInvaders
         private float movementSpeed = 5.0f;
         [SerializeField]
         private GameInput gameInput; // Reference to the game input system.
+        [Header("Shooting")]
+        [SerializeField]
+        private GameObject bulletPrefab;
+        [SerializeField]
+        private Transform bulletSpawnLocation;
 
         private bool isMoving = false; // Flag to track player's movement state.
         private BoxCollider _boxCollider; // Reference to the player's box collider.
@@ -45,11 +50,19 @@ namespace SpaceInvaders
             //Check for null operator ?
             //selectedCounter?.Interact(this);
             //Shoot the weapon
+            ShootBullet();
         }
         private void Update()
         {
             //Handles player movement according to user input.
             HandleMovement();
+        }
+        private void ShootBullet()
+        {
+            if (bulletPrefab && bulletSpawnLocation)
+            {
+                Instantiate(bulletPrefab, bulletSpawnLocation.position, Quaternion.identity);
+            }
         }
         // Handle player's movements based on user input.
         private void HandleMovement()
