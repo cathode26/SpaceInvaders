@@ -118,7 +118,7 @@ Transform:
   m_Children:
   - {fileID: 8128162502419510379}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9192966113795652797
 MonoBehaviour:
@@ -191,6 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
   explosionDuration: 0.5
+  spawnableType: 6
 --- !u!1 &225528492675756123
 GameObject:
   m_ObjectHideFlags: 0
@@ -5098,7 +5099,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8128162502419510379}
   m_Layer: 7
-  m_Name: Model
+  m_Name: Geometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

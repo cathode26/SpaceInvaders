@@ -2666,7 +2666,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3758392613425768193}
   m_Layer: 7
-  m_Name: Model
+  m_Name: Geometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7378,7 +7378,7 @@ Transform:
   m_Children:
   - {fileID: 3758392613425768193}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &501571160519162747
 MonoBehaviour:
@@ -7451,6 +7451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
   explosionDuration: 0.5
+  spawnableType: 2
 --- !u!1 &8598857010669348946
 GameObject:
   m_ObjectHideFlags: 0

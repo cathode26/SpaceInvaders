@@ -1,4 +1,5 @@
 using UnityEngine;
+using static SpaceInvaders.PrefabTypes;
 
 namespace SpaceInvaders
 {
@@ -50,19 +51,17 @@ namespace SpaceInvaders
             //Check for null operator ?
             //selectedCounter?.Interact(this);
             //Shoot the weapon
-            ShootBullet();
+            HandleShoot();
         }
         private void Update()
         {
             //Handles player movement according to user input.
             HandleMovement();
         }
-        private void ShootBullet()
+        private void HandleShoot()
         {
-            if (bulletPrefab && bulletSpawnLocation)
-            {
-                Instantiate(bulletPrefab, bulletSpawnLocation.position, Quaternion.identity);
-            }
+            GameObject bullet = ObjectPooler.Instance.RequestObject(SpawnableType.Bullet, bulletSpawnLocation.position, Quaternion.identity);
+            bullet.SetActive(true);
         }
         // Handle player's movements based on user input.
         private void HandleMovement()
