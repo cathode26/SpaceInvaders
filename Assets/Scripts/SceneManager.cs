@@ -2,7 +2,6 @@ using deVoid.Utils;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-
 namespace SpaceInvaders
 {
     public class SceneManager : MonoBehaviour
@@ -12,6 +11,7 @@ namespace SpaceInvaders
 
         private bool gameStarted = false;
         private bool gamePaused = false;
+        int score = 0;
 
         private void Awake()
         {
@@ -20,6 +20,8 @@ namespace SpaceInvaders
             Signals.Get<Project.SceneManager.HighScoreSignal>().AddListener(OnHighScore);
             Signals.Get<Project.SceneManager.MainMenuSignal>().AddListener(OnShowMainMenu);
             Signals.Get<Project.Game.NoMoreLivesSignal>().AddListener(OnQuit);
+            Signals.Get<Project.Game.AlienKilledSignal>().AddListener(OnAlienKilled);
+            Signals.Get<Project.Game.UFOKilledSignal>().AddListener(OnUFOKilled);
             gameInput.OnPauseAction += OnGameInputPause;
         }
         private void OnDestroy()
@@ -29,7 +31,20 @@ namespace SpaceInvaders
             Signals.Get<Project.SceneManager.HighScoreSignal>().RemoveListener(OnHighScore);
             Signals.Get<Project.SceneManager.MainMenuSignal>().RemoveListener(OnShowMainMenu);
             Signals.Get<Project.Game.NoMoreLivesSignal>().RemoveListener(OnQuit);
+            Signals.Get<Project.Game.AlienKilledSignal>().RemoveListener(OnAlienKilled);
+            Signals.Get<Project.Game.UFOKilledSignal>().RemoveListener(OnUFOKilled);
             gameInput.OnPauseAction -= OnGameInputPause;
+        }
+
+        private void OnUFOKilled(UFOAlien ufo)
+        {
+            score += ufo.points;
+            Signals.Get<Project.Game.ScoreUpdatedSignal>().Dispatch(score);
+        }
+        private void OnAlienKilled(Alien alien)
+        {
+            score += alien.points;
+            Signals.Get<Project.Game.ScoreUpdatedSignal>().Dispatch(score);
         }
 
         //  The GameInputOnInteractAction event is called from the GameInput when the user presses space
@@ -95,6 +110,7 @@ namespace SpaceInvaders
                 ObjectPooler.Instance.ImmediateReturnAllDelayedObjects();
                 Signals.Get<Project.SceneManager.ResetGameSignal>().Dispatch();
                 Time.timeScale = 1;
+                score = 0;
             }
         }
         public void TogglePauseGame()

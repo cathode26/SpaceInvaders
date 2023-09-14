@@ -27,7 +27,7 @@ namespace SpaceInvaders
             Signals.Get<Project.Game.AlienReachedBoundarySignal>().AddListener(OnAlienReachedBoundary);
             Signals.Get<Project.Game.AliensSpawnedSignal>().AddListener(OnAliensSpawned);
             Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
-            Signals.Get<Project.Game.AlienKilled>().AddListener(OnAlienKilled);
+            Signals.Get<Project.Game.AlienKilledSignal>().AddListener(OnAlienKilled);
         }
         private void OnDisable()
         {
@@ -35,7 +35,7 @@ namespace SpaceInvaders
             Signals.Get<Project.Game.AlienReachedBoundarySignal>().RemoveListener(OnAlienReachedBoundary);
             Signals.Get<Project.Game.AliensSpawnedSignal>().RemoveListener(OnAliensSpawned);
             Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
-            Signals.Get<Project.Game.AlienKilled>().RemoveListener(OnAlienKilled);
+            Signals.Get<Project.Game.AlienKilledSignal>().RemoveListener(OnAlienKilled);
         }
         private void OnAliensSpawned(SpawnedAliens spawnedAliens)
         {
@@ -47,7 +47,7 @@ namespace SpaceInvaders
             float speed =  1 - Mathf.Lerp(1, 0, (float)currentAlienCount / spawnedAliens.alienCount);
             return speed;
         }
-        private void OnAlienKilled()
+        private void OnAlienKilled(Alien alien)
         {
             //spawnedAliens.alienCount these are the starting amount of aliens.
             currentAlienCount--;

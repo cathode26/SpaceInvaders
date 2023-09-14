@@ -13,7 +13,11 @@ namespace SpaceInvaders
         public class NoMoreLivesSignal : ASignal { }
         public class LoadGameSignal : ASignal { }
         public class ResetGameSignal : ASignal { }
-        public class AlienKilled : ASignal { }
+        public class AlienKilledSignal : ASignal<Alien> { }
+        public class UFOKilledSignal : ASignal<UFOAlien> { }
+        public class ScoreUpdatedSignal : ASignal<int> { }
+        public class HighScoreUpdatedSignal : ASignal<int> { }
+        public class LivesChangedSignal : ASignal<int> { }
     }
 
     namespace Project.SceneManager

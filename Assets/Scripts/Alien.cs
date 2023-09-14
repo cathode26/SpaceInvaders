@@ -10,6 +10,7 @@ namespace SpaceInvaders
         public GameObject explosionPrefab; // Reference to the voxel explosion prefab
         public float explosionDuration = 0.5f; // Duration the explosion lasts
         public float shootingInterval = 1.0f;
+        public int points = 5;
 
         [SerializeField]
         private SpawnableType spawnableType;
@@ -54,7 +55,7 @@ namespace SpaceInvaders
 
             // Return yourself the alien after the explosion ends
             ObjectPooler.Instance.ReturnObject(spawnableType, gameObject);
-            Signals.Get<Project.Game.AlienKilled>().Dispatch();
+            Signals.Get<Project.Game.AlienKilledSignal>().Dispatch(this);
         }
         public void Shoot()
         {

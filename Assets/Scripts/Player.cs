@@ -163,8 +163,7 @@ namespace SpaceInvaders
             playerLives--;
 
             // Notify about the change in player lives
-            //playerLivesSignal.Raise();
-
+            Signals.Get<Project.Game.LivesChangedSignal>().Dispatch(playerLives);
             // Check if player is out of lives
             if (playerLives <= 0)
             {
