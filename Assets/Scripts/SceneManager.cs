@@ -1,12 +1,10 @@
 using deVoid.Utils;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace SpaceInvaders
 {
     public class SceneManager : MonoBehaviour
     {
-        public GameObject gameUI;     // The game UI
         public GameInput gameInput;
 
         private bool gameStarted = false;
@@ -16,7 +14,6 @@ namespace SpaceInvaders
         {
             Signals.Get<Project.MainMenu.QuitSignal>().AddListener(OnQuit);
             Signals.Get<Project.MainMenu.PlaySignal>().AddListener(OnPlayOrResume);
-            Signals.Get<Project.SceneManager.MainMenuSignal>().AddListener(OnShowMainMenu);
             Signals.Get<Project.Game.NoMoreLivesSignal>().AddListener(OnQuit);
             
             gameInput.OnPauseAction += OnGameInputPause;
@@ -25,7 +22,6 @@ namespace SpaceInvaders
         {
             Signals.Get<Project.MainMenu.QuitSignal>().RemoveListener(OnQuit);
             Signals.Get<Project.MainMenu.PlaySignal>().RemoveListener(OnPlayOrResume);
-            Signals.Get<Project.SceneManager.MainMenuSignal>().RemoveListener(OnShowMainMenu);
             Signals.Get<Project.Game.NoMoreLivesSignal>().RemoveListener(OnQuit);
             
             gameInput.OnPauseAction -= OnGameInputPause;
@@ -37,35 +33,12 @@ namespace SpaceInvaders
             TogglePauseGame();
         }
 
-        private void Start()
-        {
-            // Initial setup
-            OnShowMainMenu();
-            //HideGameElements();
-        }
-
-        private void OnShowMainMenu()
-        {
-
-            if (!gameStarted)
-            {
-                gameUI.SetActive(false);
-            }
-        }
-
-        private void HideMainMenu()
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-            gameUI.SetActive(true);
-        }
         public void OnPlayOrResume()
         {
             if (!gameStarted)
             {
                 gameStarted = true;
                 // Start the game
-                HideMainMenu();
-                //ShowGameElements();
                 Signals.Get<Project.SceneManager.LoadGameSignal>().Dispatch();
 
             }
@@ -73,9 +46,7 @@ namespace SpaceInvaders
             {
                 // Resume game
                 gamePaused = false;
-                HideMainMenu();
-                //ShowGameElements();
-                // Unpause game logic here
+                Signals.Get<Project.SceneManager.GamePausedSignal>().Dispatch(gamePaused);
             }
             Time.timeScale = 1;
         }

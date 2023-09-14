@@ -39,7 +39,7 @@ namespace SpaceInvaders
         }
         private void OnGamePaused(bool paused)
         {
-            if(paused == false)
+            if(paused == true)
                 ui.SetActive(false);
             else
                 ui.SetActive(true);
