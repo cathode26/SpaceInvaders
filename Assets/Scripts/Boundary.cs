@@ -1,14 +1,17 @@
 using UnityEngine;
 
-public class Boundary : MonoBehaviour
+namespace SpaceInvaders
 {
-    public enum BoundaryType
+    public class Boundary : MonoBehaviour
     {
-        TopBoundary,
-        BottomBoundary,
-        LeftBoundary,
-        RightBoundary,
-    }
+        public enum BoundaryType
+        {
+            TopBoundary,
+            BottomBoundary,
+            LeftBoundary,
+            RightBoundary,
+        }
 
-    public BoundaryType boundaryType;
+        public BoundaryType boundaryType;
+    }
 }

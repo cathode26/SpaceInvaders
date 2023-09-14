@@ -20,11 +20,12 @@ namespace SpaceInvaders
         public class SetSpinModeSignal : ASignal<string> { }
     }
 
-    namespace Project.ModeManager
+    namespace Project.SceneManager
     {
-        public class ManageSpinModeSignal : ASignal<string> { }
-        public class SetSpinModeSignal : ASignal<string> { }
-        public class SetPopupModeSignal : ASignal<bool> { }
+        public class PlaySignal : ASignal { }
+        public class HighScoreSignal : ASignal { }
+        public class MainMenuSignal : ASignal { }
+        public class QuitSignal : ASignal { }
     }
 
     namespace Project.UI

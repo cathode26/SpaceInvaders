@@ -1,23 +1,25 @@
-using SpaceInvaders;
 using UnityEngine;
 using static SpaceInvaders.PrefabTypes;
 
-public class EnemyBullet : Bullet
+namespace SpaceInvaders
 {
-    private void Awake()
+    public class EnemyBullet : Bullet
     {
-        direction = Vector3.down;
-    }
-
-    protected override void HandleCollision(Collider other)
-    {
-        if (other.GetComponent<Player>() || other.GetComponent<Boundary>())
+        private void Awake()
         {
-            // Handle collision with the player
-            // For example, decrease player health or trigger a game over
+            direction = Vector3.down;
+        }
 
-            // Return bullet to the pool
-            ObjectPooler.Instance.ReturnObject(SpawnableType.EnemyBullet, gameObject);
+        protected override void HandleCollision(Collider other)
+        {
+            if (other.GetComponent<Player>() || other.GetComponent<Boundary>())
+            {
+                // Handle collision with the player
+                // For example, decrease player health or trigger a game over
+
+                // Return bullet to the pool
+                ObjectPooler.Instance.ReturnObject(SpawnableType.EnemyBullet, gameObject);
+            }
         }
     }
 }
