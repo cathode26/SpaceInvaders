@@ -18,7 +18,7 @@ namespace SpaceInvaders
         private void OnTriggerEnter(Collider other)
         {
             // If collided with a bullet and not already in the dying process
-            if (other.gameObject.GetComponent<Bullet>() && !isDying)
+            if (other.gameObject.GetComponent<PlayerBullet>() && !isDying)
             {
                 isDying = true;
                 HandleDeath();
@@ -38,11 +38,17 @@ namespace SpaceInvaders
                 explosion.transform.position += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f));
 
                 // Return the explosion after a brief duration
-                ObjectPooler.Instance.ReturnObject(spawnableType, gameObject, explosionDuration);
+                ObjectPooler.Instance.ReturnObject(spawnableType, explosion, explosionDuration);
             }
 
             // Return yourself the alien after the explosion ends
             ObjectPooler.Instance.ReturnObject(spawnableType, gameObject);
+        }
+        public void Shoot()
+        {
+            Vector3 spawnPosition = transform.position;
+            // Request a Enemy Bullet from ObjectPooler 
+            ObjectPooler.Instance.RequestObject(SpawnableType.EnemyBullet, spawnPosition, Quaternion.identity);
         }
     }
 }

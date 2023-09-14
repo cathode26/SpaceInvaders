@@ -24,6 +24,7 @@ namespace SpaceInvaders
         // Event triggered when player's moving state changes.
         public delegate void MovingState(bool isWalking);
         public event MovingState OnMovingStateChanged;
+        private int playerLives = 3; // player's initial lives
 
         private void Awake()
         {
@@ -60,7 +61,7 @@ namespace SpaceInvaders
         }
         private void HandleShoot()
         {
-            GameObject bullet = ObjectPooler.Instance.RequestObject(SpawnableType.Bullet, bulletSpawnLocation.position, Quaternion.identity);
+            GameObject bullet = ObjectPooler.Instance.RequestObject(SpawnableType.PlayerBullet, bulletSpawnLocation.position, Quaternion.identity);
             bullet.SetActive(true);
         }
         // Handle player's movements based on user input.
@@ -129,6 +130,38 @@ namespace SpaceInvaders
             }
 
             return true; // no problematic collisions detected
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            // Check if the player is hit by an enemy bullet
+            if (other.gameObject.GetComponent<EnemyBullet>())
+            {
+                // Decrease player's life
+                DecreaseLife();
+            }
+        }
+
+        private void DecreaseLife()
+        {
+            playerLives--;
+
+            // Notify about the change in player lives
+            //playerLivesSignal.Raise();
+
+            // Check if player is out of lives
+            if (playerLives <= 0)
+            {
+                GameOver();
+            }
+        }
+
+        private void GameOver()
+        {
+            // Pause the game
+            Time.timeScale = 0;
+
+            // TODO: Show GameOver UI or any other related logic.
         }
     }
 }

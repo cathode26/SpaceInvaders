@@ -82,12 +82,15 @@ MonoBehaviour:
   - type: 7
     prefab: {fileID: 524903272804811178, guid: 506ecd60bd8627f44af447a36147bcbb, type: 3}
     initialSize: 0
-  - type: 8
+  - type: 9
     prefab: {fileID: 4218586283305291545, guid: 0ade6df1df15cc04abe14cafd6dfddca, type: 3}
     initialSize: 0
-  - type: 9
+  - type: 10
     prefab: {fileID: 3423926750526941017, guid: ef6381212e258cc45bc7d81ccb4e625c, type: 3}
     initialSize: 0
-  - type: 10
+  - type: 11
     prefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
+    initialSize: 0
+  - type: 8
+    prefab: {fileID: 524903272804811178, guid: 21ffb54ab6e911942aa2afbde3c26c3a, type: 3}
     initialSize: 0

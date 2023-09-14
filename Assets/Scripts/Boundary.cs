@@ -4,8 +4,10 @@ public class Boundary : MonoBehaviour
 {
     public enum BoundaryType
     {
+        TopBoundary,
+        BottomBoundary,
         LeftBoundary,
-        RightBoundary
+        RightBoundary,
     }
 
     public BoundaryType boundaryType;

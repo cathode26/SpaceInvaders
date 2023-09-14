@@ -13,7 +13,8 @@ namespace SpaceInvaders
             PinkAlien,
             RedAlien,
             YellowAlien,
-            Bullet,
+            PlayerBullet,
+            EnemyBullet,
             AlienShip,
             Player,
             Explosion
