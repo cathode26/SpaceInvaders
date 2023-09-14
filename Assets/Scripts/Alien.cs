@@ -1,3 +1,4 @@
+using deVoid.Utils;
 using UnityEngine;
 using static SpaceInvaders.PrefabTypes;
 
@@ -15,10 +16,12 @@ namespace SpaceInvaders
         private bool isDying = false;
         private bool isAlive = false;
         public bool IsAlive { get => isAlive; private set => isAlive = value; }
+        public SpawnableType SpawnableType { get => spawnableType; private set => spawnableType = value; }
 
         public void OnEnable()
         {
             isAlive = true;
+            isDying = false;
         }
         public void OnDisable()
         {
@@ -46,7 +49,7 @@ namespace SpaceInvaders
                 explosion.transform.position += new Vector3(Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f));
 
                 // Return the explosion after a brief duration
-                ObjectPooler.Instance.ReturnObject(spawnableType, explosion, explosionDuration);
+                ObjectPooler.Instance.ReturnObject(SpawnableType.Explosion, explosion, explosionDuration);
             }
 
             // Return yourself the alien after the explosion ends
@@ -57,6 +60,13 @@ namespace SpaceInvaders
             Vector3 spawnPosition = transform.position;
             // Request a Enemy Bullet from ObjectPooler 
             ObjectPooler.Instance.RequestObject(SpawnableType.EnemyBullet, spawnPosition, Quaternion.identity);
+        }
+        public void Kill()
+        {
+            // Disable the alien (make it invisible)
+            gameObject.SetActive(false);
+            // Return yourself the alien after the explosion ends
+            ObjectPooler.Instance.ReturnObject(spawnableType, gameObject);
         }
     }
 }

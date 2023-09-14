@@ -15,6 +15,7 @@ namespace SpaceInvaders
             ui = transform.GetChild(0).gameObject;
 
             Signals.Get<Project.MainMenu.OnHighScoresPressedSignal>().AddListener(OnShowHighScores);
+            Signals.Get<Project.SceneManager.GamePausedSignal>().AddListener(OnGamePaused);
 
             backButton.onClick.AddListener(() =>
             {
@@ -25,10 +26,16 @@ namespace SpaceInvaders
         private void OnDestroy()
         {
             Signals.Get<Project.MainMenu.OnHighScoresPressedSignal>().RemoveListener(OnShowHighScores);
+            Signals.Get<Project.SceneManager.GamePausedSignal>().RemoveListener(OnGamePaused);
         }
         private void OnShowHighScores()
         {
             ui.SetActive(true);
+        }
+        private void OnGamePaused(bool paused)
+        {
+            if(paused == false)
+                ui.SetActive(false);
         }
     }
 }

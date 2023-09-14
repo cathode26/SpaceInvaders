@@ -15,15 +15,19 @@ namespace SpaceInvaders
         public Transform bottomPosition;
 
         public float alienHeightOffsetPercentage = 0.1f; // The percentage of the max alien height to offset from the top
+        public float alienWidthOffsetPercentage = 0.3f; // The percentage of the max alien height to offset from the top
+
         public int numberOfRows = 10;
         public int numberOfColumns = 10;
 
-        public struct SpawnedAliens
+        public class SpawnedAliens
         {
+            public int alienCount;
             public List<List<Alien>> aliensInRows;
             public List<List<Alien>> aliensInColumns;
-            public SpawnedAliens(List<List<Alien>> aliensInRows, List<List<Alien>> aliensInColumns)
+            public SpawnedAliens(List<List<Alien>> aliensInRows, List<List<Alien>> aliensInColumns, int alienCount)
             {
+                this.alienCount = alienCount;
                 this.aliensInRows = aliensInRows;
                 this.aliensInColumns = aliensInColumns;
             }
@@ -33,14 +37,25 @@ namespace SpaceInvaders
         private float maxAlienWidth;
         private float maxAlienHeight;
 
-        void Start()
+        private void Awake()
+        {
+            Signals.Get<Project.Game.LoadGameSignal>().AddListener(OnLoadGame);
+            Signals.Get<Project.Game.ResetGameSignal>().AddListener(OnResetGame);
+        }
+        private void OnDestroy()
+        {
+            Signals.Get<Project.Game.LoadGameSignal>().RemoveListener(OnLoadGame);
+            Signals.Get<Project.Game.ResetGameSignal>().RemoveListener(OnResetGame);
+        }
+        private void OnLoadGame()
         {
             CalculateMaxAlienSize();
             SpawnAliens();
         }
-
         void CalculateMaxAlienSize()
         {
+            maxAlienWidth = 0.0f;
+            maxAlienHeight = 0.0f;
             foreach (SpawnableType alienType in alienTypes)
             {
                 BoxCollider alienCollider = ObjectPooler.Instance.GetBoxCollider(alienType);
@@ -54,6 +69,7 @@ namespace SpaceInvaders
                     Debug.LogError($"Alien prefab {alienType.ToString()} does not have a BoxCollider!");
                 }
             }
+            maxAlienWidth = maxAlienWidth + (maxAlienWidth * alienWidthOffsetPercentage);
         }
         public void SpawnAliens()
         {
@@ -91,8 +107,17 @@ namespace SpaceInvaders
                 aliensInRows.Add(currentRowAliens);
             }
 
-            spawnedAliens = new SpawnedAliens(aliensInRows, aliensInColumns);
+            spawnedAliens = new SpawnedAliens(aliensInRows, aliensInColumns, numberOfColumns*numberOfRows);
             Signals.Get<Project.Game.AliensSpawnedSignal>().Dispatch(spawnedAliens);
+        }
+        private void OnResetGame()
+        {
+            foreach (List<Alien> alienList in spawnedAliens.aliensInRows)
+                foreach (Alien alien in alienList)
+                    if (alien.IsAlive)
+                        alien.Kill();
+
+            spawnedAliens = null;
         }
     }
 }

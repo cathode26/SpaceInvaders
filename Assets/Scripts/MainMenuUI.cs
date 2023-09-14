@@ -21,13 +21,16 @@ namespace SpaceInvaders
             ui = transform.GetChild(0).gameObject;
 
             Signals.Get<Project.HighScores.OnBackPressedSignal>().AddListener(OnHighScoresBackPressed);
+            Signals.Get<Project.SceneManager.GamePausedSignal>().AddListener(OnGamePaused);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
 
             playButton.onClick.AddListener(() =>
             {
                 TextMeshProUGUI buttonText = playButton.GetComponentInChildren<TextMeshProUGUI>();
                 buttonText.text = "CONTINUE";
-                Signals.Get<Project.SceneManager.PlaySignal>().Dispatch();
+                Signals.Get<Project.MainMenu.PlaySignal>().Dispatch();
                 quitButton.interactable = true;
+                ui.SetActive(false);
             });
             highScoreButton.onClick.AddListener(() =>
             {
@@ -39,17 +42,32 @@ namespace SpaceInvaders
                 TextMeshProUGUI buttonText = playButton.GetComponentInChildren<TextMeshProUGUI>();
                 buttonText.text = "PLAY";
                 quitButton.interactable = false;
-                Signals.Get<Project.SceneManager.QuitSignal>().Dispatch();
+                Signals.Get<Project.MainMenu.QuitSignal>().Dispatch();
             });
         }
         private void OnDestroy()
         {
             Signals.Get<Project.HighScores.OnBackPressedSignal>().RemoveListener(OnHighScoresBackPressed);
+            Signals.Get<Project.SceneManager.GamePausedSignal>().AddListener(OnGamePaused);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
         }
         private void OnHighScoresBackPressed()
         {
             ui.SetActive(true);
         }
-
+        private void OnGamePaused(bool paused)
+        {
+            if (paused)
+                ui.SetActive(true);
+            else
+                ui.SetActive(false);
+        }
+        private void OnResetGame()
+        {
+            TextMeshProUGUI buttonText = playButton.GetComponentInChildren<TextMeshProUGUI>();
+            buttonText.text = "PLAY";
+            quitButton.interactable = false;
+            ui.SetActive(true);
+        }
     }
 }

@@ -7,7 +7,6 @@ namespace SpaceInvaders
 {
     public class AlienGroupController : MonoBehaviour
     {
-        private int alienCount = 10;
         private int aliensMoved = 0;
         private Boundary _boundary;
 
@@ -15,6 +14,7 @@ namespace SpaceInvaders
         private float alienShootFrequency = 2.0f; // Average time (in seconds) between alien shots
         private float shootingTimer = 0f; // The next time when an alien will shoot
         Alien nextShootingAlien;
+        bool aliensReachedBoundary = false;
 
         void Start()
         {
@@ -23,14 +23,16 @@ namespace SpaceInvaders
         private void OnEnable()
         {
             Signals.Get<Project.Game.MoveAlienCompletedSignal>().AddListener(OnMoveAlienCompleted);
-            Signals.Get<Project.Game.OnAlienReachedBoundarySignal>().AddListener(OnAlienReachedBoundary);
+            Signals.Get<Project.Game.AlienReachedBoundarySignal>().AddListener(OnAlienReachedBoundary);
             Signals.Get<Project.Game.AliensSpawnedSignal>().AddListener(OnAliensSpawned);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
         }
         private void OnDisable()
         {
             Signals.Get<Project.Game.MoveAlienCompletedSignal>().RemoveListener(OnMoveAlienCompleted);
-            Signals.Get<Project.Game.OnAlienReachedBoundarySignal>().RemoveListener(OnAlienReachedBoundary);
+            Signals.Get<Project.Game.AlienReachedBoundarySignal>().RemoveListener(OnAlienReachedBoundary);
             Signals.Get<Project.Game.AliensSpawnedSignal>().RemoveListener(OnAliensSpawned);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
         }
         private void OnAliensSpawned(SpawnedAliens spawnedAliens)
         {
@@ -39,8 +41,14 @@ namespace SpaceInvaders
         private void OnMoveAlienCompleted()
         {
             aliensMoved++;
-            if (alienCount >= aliensMoved)
+            if (aliensMoved >= spawnedAliens.alienCount)
             {
+                if (aliensReachedBoundary)
+                {
+                    Signals.Get<Project.Game.DirectionReversedSignal>().Dispatch();
+                    aliensReachedBoundary = false;
+                }
+                
                 Signals.Get<Project.Game.MoveAlienSignal>().Dispatch();
                 aliensMoved = 0;
             }
@@ -49,8 +57,8 @@ namespace SpaceInvaders
         {
             if (boundary != null && _boundary != boundary)
             {
+                aliensReachedBoundary = true;
                 _boundary = boundary;
-                Signals.Get<Project.Game.DirectionReversedSignal>().Dispatch();
             }
         }
         void Update()
@@ -59,6 +67,9 @@ namespace SpaceInvaders
         }
         private void HandleAlienShooting()
         {
+            if (spawnedAliens == null)
+                return;
+
             shootingTimer -= Time.deltaTime;
 
             if (shootingTimer <= 0)
@@ -98,6 +109,16 @@ namespace SpaceInvaders
             }
 
             return null;  // No alive aliens in this column
+        }
+
+        public void OnResetGame()
+        {
+            _boundary = null;
+            aliensMoved = 0;
+            nextShootingAlien = null;
+            spawnedAliens = null;
+            shootingTimer = 0;
+            aliensReachedBoundary = false; 
         }
     }
 }

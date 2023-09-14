@@ -18,13 +18,14 @@ namespace SpaceInvaders
         private bool _isAlive = true;
         private AlienMoveState _currentState = AlienMoveState.STATIONARY;
         private int _moveDirection = -1;
-        private float _moveDistance = 0.010f;  // Distance invaders move in each "step"
+        private float _moveDistance = 0.1f;  // Distance invaders move in each "step"
         private float _curMoveTime = 0.0f;
         private int _moveDuration = 100;
         private Vector3 _startingPosition;
         private float _downDistance = 0.05f;  // Distance invaders move down when changing direction
-        private int _pauseDuration = 100;  // ms Time between each movement "step"
+        private int _pauseDuration = 400;  // ms Time between each movement "step"
         private float _curPauseTime = 0.0f;
+        private int _randomStart = 50;
 
         private float _startMoveDuration = 0.0f;
         private float _curStartMoveTime = 0.0f;
@@ -43,10 +44,22 @@ namespace SpaceInvaders
         {
             _currentState = AlienMoveState.STATIONARY;
             _startingPosition = transform.position;
-            _startMoveDuration = RandomRangeSeeded.Generate(0, _pauseDuration - _moveDuration);
+            _startMoveDuration = RandomRangeSeeded.Generate(0, _randomStart);
+        }
+        private void Reset()
+        {
+            _isAlive = true;
+            _curPauseTime = 0.0f;
+            _curStartMoveTime = 0.0f;
+            _moveDirection = -1;
+            _curMoveTime = 0;
+            _currentState = AlienMoveState.STATIONARY;
+            _startingPosition = transform.position;
+            _startMoveDuration = RandomRangeSeeded.Generate(0, _randomStart);
         }
         private void OnEnable()
         {
+            Reset();
             GatherSiblingsAndSetOwnIndex();
             Signals.Get<Project.Game.MoveAlienSignal>().AddListener(OnMoveAlien);
             Signals.Get<Project.Game.DirectionReversedSignal>().AddListener(OnDirectionReversed);
@@ -104,7 +117,7 @@ namespace SpaceInvaders
         {
             Boundary boundary = collider.gameObject.GetComponent<Boundary>();
             if (boundary != null)
-                Signals.Get<Project.Game.OnAlienReachedBoundarySignal>().Dispatch(boundary);
+                Signals.Get<Project.Game.AlienReachedBoundarySignal>().Dispatch(boundary);
         }
 
         private void OnMoveAlien()
@@ -114,7 +127,7 @@ namespace SpaceInvaders
             _curMoveTime = 0.0f;
             _startingPosition = transform.position;
             _currentState = AlienMoveState.INITIAL_PAUSE;
-            _startMoveDuration = RandomRangeSeeded.Generate(0, _pauseDuration - _moveDuration);
+            _startMoveDuration = RandomRangeSeeded.Generate(0, _randomStart);
 
         }
         private void OnDirectionReversed()

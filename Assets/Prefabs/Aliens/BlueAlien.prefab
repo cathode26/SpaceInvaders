@@ -3662,10 +3662,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3039993207933951006}
   - component: {fileID: 7027544345371470773}
+  - component: {fileID: -5083403342756035256}
   - component: {fileID: 7316967398455466287}
   - component: {fileID: 1109114636831105661}
   - component: {fileID: 7542295718597997185}
-  - component: {fileID: -5083403342756035256}
   m_Layer: 7
   m_Name: BlueAlien
   m_TagString: Untagged
@@ -3701,6 +3701,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 371a045a645d6914d8ed532e07b6f2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-5083403342756035256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5721415159163622653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 950d1f949df637c49ae0eda45a83bb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
+  explosionDuration: 0.5
+  shootingInterval: 3
+  spawnableType: 0
 --- !u!114 &7316967398455466287
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3746,22 +3762,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1023d7925f1a5428df13be3884cead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-5083403342756035256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5721415159163622653}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 950d1f949df637c49ae0eda45a83bb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
-  explosionDuration: 0.5
-  shootingInterval: 3
-  spawnableType: 0
 --- !u!1 &5772076129928683371
 GameObject:
   m_ObjectHideFlags: 0

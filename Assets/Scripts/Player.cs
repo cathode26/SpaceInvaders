@@ -1,3 +1,4 @@
+using deVoid.Utils;
 using UnityEngine;
 using static SpaceInvaders.PrefabTypes;
 
@@ -25,6 +26,8 @@ namespace SpaceInvaders
         public delegate void MovingState(bool isWalking);
         public event MovingState OnMovingStateChanged;
         private int playerLives = 3; // player's initial lives
+        private Vector3 startingPosition;
+        private int startingLives;
 
         private void Awake()
         {
@@ -34,9 +37,20 @@ namespace SpaceInvaders
             else
                 Debug.Log("Error: Instance of Player is not null");
 
+            startingLives = playerLives;
+            startingPosition = transform.position;
             _boxCollider = GetComponent<BoxCollider>();
+            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
         }
-
+        private void OnDestroy()
+        {
+            Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
+        }
+        private void OnResetGame()
+        {
+            transform.position = startingPosition;
+            playerLives = startingLives;
+        }
         // Register and unregister events.
         private void OnEnable()
         {
@@ -159,7 +173,8 @@ namespace SpaceInvaders
         private void GameOver()
         {
             // Pause the game
-            Time.timeScale = 0;
+            
+            Signals.Get<Project.Game.NoMoreLivesSignal>().Dispatch();
 
             // TODO: Show GameOver UI or any other related logic.
         }

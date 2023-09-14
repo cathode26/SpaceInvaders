@@ -8,15 +8,19 @@ namespace SpaceInvaders
         public class MoveAlienSignal : ASignal { }
         public class MoveAlienCompletedSignal : ASignal { }
         public class DirectionReversedSignal : ASignal { }
-        public class OnAlienReachedBoundarySignal : ASignal<Boundary> { }
+        public class AlienReachedBoundarySignal : ASignal<Boundary> { }
+        public class NoMoreLivesSignal : ASignal { }
+        public class LoadGameSignal : ASignal { }
+        public class ResetGameSignal : ASignal { }
     }
 
     namespace Project.SceneManager
     {
-        public class PlaySignal : ASignal { }
+        public class LoadGameSignal : ASignal { }
         public class HighScoreSignal : ASignal { }
         public class MainMenuSignal : ASignal { }
-        public class QuitSignal : ASignal { }
+        public class GamePausedSignal : ASignal<bool> { }
+        public class ResetGameSignal : ASignal { }
     }
 
     namespace Project.HighScores
@@ -25,6 +29,8 @@ namespace SpaceInvaders
     }
     namespace Project.MainMenu
     {
+        public class PlaySignal : ASignal { }
+        public class QuitSignal : ASignal { }
         public class OnHighScoresPressedSignal : ASignal { }
     }
 }
