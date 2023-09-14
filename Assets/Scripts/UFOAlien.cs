@@ -13,6 +13,10 @@ namespace SpaceInvaders
         private bool isDying = false;
         public float explosionDuration = 0.5f; // Duration the explosion lasts
 
+        private void OnEnable()
+        {
+            isDying = false;
+        }
         void Update()
         {
             if (isMovingRight)
