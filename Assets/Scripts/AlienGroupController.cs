@@ -107,7 +107,8 @@ namespace SpaceInvaders
                 else
                 {
                     // If we've already chosen the next shooting alien, let it shoot now
-                    nextShootingAlien.Shoot();
+                    if(nextShootingAlien.gameObject.activeSelf) //dont shoot from returned aliens
+                        nextShootingAlien.Shoot();
                     nextShootingAlien = null;  // Reset for the next cycle
                 }
             }
