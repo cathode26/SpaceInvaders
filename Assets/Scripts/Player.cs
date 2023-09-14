@@ -154,6 +154,8 @@ namespace SpaceInvaders
                 // Decrease player's life
                 DecreaseLife();
             }
+            if (other.gameObject.GetComponent<Alien>())
+                GameOver();
         }
 
         private void DecreaseLife()

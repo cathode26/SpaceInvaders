@@ -124,9 +124,17 @@ namespace SpaceInvaders
         {
             Boundary boundary = collider.gameObject.GetComponent<Boundary>();
             if (boundary != null)
-                Signals.Get<Project.Game.AlienReachedBoundarySignal>().Dispatch(boundary);
+            {
+                if (boundary.boundaryType == Boundary.BoundaryType.BottomBoundary)
+                    GameOver();
+                else
+                    Signals.Get<Project.Game.AlienReachedBoundarySignal>().Dispatch(boundary);
+            }
         }
-
+        private void GameOver()
+        {
+            Signals.Get<Project.Game.NoMoreLivesSignal>().Dispatch();
+        }
         private void OnMoveAlien()
         {
             _curPauseTime = 0.0f;
