@@ -1,6 +1,4 @@
 using deVoid.Utils;
-using System;
-using System.Collections.Generic;
 
 namespace SpaceInvaders
 {
@@ -13,13 +11,6 @@ namespace SpaceInvaders
         public class OnAlienReachedBoundarySignal : ASignal<Boundary> { }
     }
 
-    namespace Project.Audio
-    {
-        public class SymbolSoundsSignal : ASignal<List<string>, float> { }
-        public class StopSymbolSoundsSignal : ASignal { }
-        public class SetSpinModeSignal : ASignal<string> { }
-    }
-
     namespace Project.SceneManager
     {
         public class PlaySignal : ASignal { }
@@ -28,10 +19,13 @@ namespace SpaceInvaders
         public class QuitSignal : ASignal { }
     }
 
-    namespace Project.UI
+    namespace Project.HighScores
     {
-        public class GetCoinsNumberSignal : ASignal<Action<long>> { }
-        public class LoadStickySymbolsSignal : ASignal<string[]> { }
+        public class OnBackPressedSignal : ASignal { }
+    }
+    namespace Project.MainMenu
+    {
+        public class OnHighScoresPressedSignal : ASignal { }
     }
 }
 

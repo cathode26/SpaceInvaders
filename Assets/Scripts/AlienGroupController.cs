@@ -12,7 +12,7 @@ namespace SpaceInvaders
         private Boundary _boundary;
 
         SpawnedAliens spawnedAliens;
-        private float alienShootFrequency = 0.25f; // Average time (in seconds) between alien shots
+        private float alienShootFrequency = 2.0f; // Average time (in seconds) between alien shots
         private float nextShootTime = 0f; // The next time when an alien will shoot
         
         void Start()

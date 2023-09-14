@@ -25,12 +25,12 @@ namespace SpaceInvaders
             //Here, the input system is initialized and the Interact action is set up to trigger the OnInteractAction event when performed.
             playerInputActions.Player.Interact.performed += InteractPerformed;
 
-            playerInputActions.Player.Pause.performed += Pause_performed;
+            playerInputActions.Player.Pause.performed += PausePerformed;
         }
         private void OnDestroy()
         {
             playerInputActions.Player.Interact.performed -= InteractPerformed;
-            playerInputActions.Player.Pause.performed -= Pause_performed;
+            playerInputActions.Player.Pause.performed -= PausePerformed;
             playerInputActions.Dispose();
         }
         private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -45,7 +45,7 @@ namespace SpaceInvaders
             bool moved = playerInputActions.Player.Move.IsPressed();
             return (moved, inputVector);
         }
-        private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void PausePerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             OnPauseAction?.Invoke(this, EventArgs.Empty);
         }

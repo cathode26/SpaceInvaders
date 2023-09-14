@@ -9,6 +9,7 @@ namespace SpaceInvaders
         public GameObject mainMenuUI; // The main menu UI
         public GameObject gameUI;     // The game UI
         public GameObject gameElements; // The game elements like player, enemies, etc.
+        public GameInput gameInput;
 
         private bool gameStarted = false;
         private bool gamePaused = false;
@@ -18,13 +19,22 @@ namespace SpaceInvaders
             Signals.Get<Project.SceneManager.PlaySignal>().AddListener(OnPlayOrResume);
             Signals.Get<Project.SceneManager.HighScoreSignal>().AddListener(OnHighScore);
             Signals.Get<Project.SceneManager.MainMenuSignal>().AddListener(ShowMainMenu);
+            gameInput.OnPauseAction += OnGameInputPause;
         }
         private void OnDestroy()
         {
             Signals.Get<Project.SceneManager.PlaySignal>().RemoveListener(OnPlayOrResume);
             Signals.Get<Project.SceneManager.HighScoreSignal>().RemoveListener(OnHighScore);
             Signals.Get<Project.SceneManager.MainMenuSignal>().RemoveListener(ShowMainMenu);
+            gameInput.OnPauseAction -= OnGameInputPause;
         }
+
+        //  The GameInputOnInteractAction event is called from the GameInput when the user presses space
+        private void OnGameInputPause(object sender, System.EventArgs e)
+        {
+            TogglePauseGame();
+        }
+
         private void Start()
         {
             // Initial setup
@@ -94,7 +104,7 @@ namespace SpaceInvaders
             }
         }
 
-        public void OnEscape()
+        public void TogglePauseGame()
         {
             if (gameStarted)
             {
