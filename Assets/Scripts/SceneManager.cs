@@ -94,6 +94,7 @@ namespace SpaceInvaders
                 gameStarted = false;
                 ObjectPooler.Instance.ImmediateReturnAllDelayedObjects();
                 Signals.Get<Project.SceneManager.ResetGameSignal>().Dispatch();
+                Time.timeScale = 1;
             }
         }
         public void TogglePauseGame()

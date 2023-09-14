@@ -15,7 +15,7 @@ namespace SpaceInvaders
             YellowAlien,
             PlayerBullet,
             EnemyBullet,
-            AlienShip,
+            UFOAlien,
             Player,
             Explosion
         }

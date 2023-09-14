@@ -3247,12 +3247,11 @@ GameObject:
   m_Component:
   - component: {fileID: 5084602270611530114}
   - component: {fileID: 8332504005036516194}
-  - component: {fileID: 3163854491063584434}
   - component: {fileID: 179536200683622911}
   - component: {fileID: 2519195604589398301}
-  - component: {fileID: 7185040339842989610}
+  - component: {fileID: 6855113658510684388}
   m_Layer: 7
-  m_Name: AlienShip
+  m_Name: UFOAlien
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3284,18 +3283,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 371a045a645d6914d8ed532e07b6f2bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3163854491063584434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4218586283305291545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5e231b7d5faa534f85a1531a05bfc4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!65 &179536200683622911
@@ -3331,7 +3318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1023d7925f1a5428df13be3884cead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7185040339842989610
+--- !u!114 &6855113658510684388
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3340,13 +3327,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4218586283305291545}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 950d1f949df637c49ae0eda45a83bb30, type: 3}
+  m_Script: {fileID: 11500000, guid: c9f83896ffb29ad4e9b38740824f0b63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
-  explosionDuration: 0.5
-  shootingInterval: 0.5
-  spawnableType: 9
+  speed: 1
+  bonusPoints: 200
 --- !u!1 &4299363445732489988
 GameObject:
   m_ObjectHideFlags: 0
