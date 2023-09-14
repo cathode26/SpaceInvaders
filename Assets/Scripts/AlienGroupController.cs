@@ -13,8 +13,9 @@ namespace SpaceInvaders
 
         SpawnedAliens spawnedAliens;
         private float alienShootFrequency = 2.0f; // Average time (in seconds) between alien shots
-        private float nextShootTime = 0f; // The next time when an alien will shoot
-        
+        private float shootingTimer = 0f; // The next time when an alien will shoot
+        Alien nextShootingAlien;
+
         void Start()
         {
             Signals.Get<Project.Game.MoveAlienSignal>().Dispatch();
@@ -58,26 +59,30 @@ namespace SpaceInvaders
         }
         private void HandleAlienShooting()
         {
-            if (Time.time >= nextShootTime)
+            shootingTimer -= Time.deltaTime;
+
+            if (shootingTimer <= 0)
             {
-                ShootFromRandomAlien();
-                float variance = RandomRangeSeeded.Generate(-1000, 1000)/1000.0f; // Random variance to make shooting unpredictable
-                nextShootTime = Time.time + alienShootFrequency + variance;
+                // If we haven't chosen the next shooting alien yet, select one now
+                if (nextShootingAlien == null)
+                {
+                    int randomColumnIndex = RandomRangeSeeded.Generate(0, spawnedAliens.aliensInColumns.Count);
+                    nextShootingAlien = GetShootingAlienFromColumn(randomColumnIndex);
+
+                    if (nextShootingAlien)
+                    {
+                        // Reset the timer to the selected alien's shooting interval
+                        shootingTimer = nextShootingAlien.shootingInterval;
+                    }
+                }
+                else
+                {
+                    // If we've already chosen the next shooting alien, let it shoot now
+                    nextShootingAlien.Shoot();
+                    nextShootingAlien = null;  // Reset for the next cycle
+                }
             }
         }
-        private void ShootFromRandomAlien()
-        {
-            // Randomly select a column
-            int randomColumnIndex = RandomRangeSeeded.Generate(0, spawnedAliens.aliensInColumns.Count);
-
-            Alien shootingAlien = GetShootingAlienFromColumn(randomColumnIndex);
-
-            // If there's no alive alien in the randomly selected column, return
-            if (shootingAlien == null) return;
-
-            shootingAlien.Shoot();
-        }
-
         public Alien GetShootingAlienFromColumn(int columnIndex)
         {
             if (columnIndex < 0 || columnIndex >= spawnedAliens.aliensInColumns.Count)

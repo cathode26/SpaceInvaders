@@ -8,13 +8,22 @@ namespace SpaceInvaders
         [Header("Explosion Settings")]
         public GameObject explosionPrefab; // Reference to the voxel explosion prefab
         public float explosionDuration = 0.5f; // Duration the explosion lasts
+        public float shootingInterval = 1.0f;
 
         [SerializeField]
         private SpawnableType spawnableType;
         private bool isDying = false;
-        private bool isAlive = true;
+        private bool isAlive = false;
         public bool IsAlive { get => isAlive; private set => isAlive = value; }
 
+        public void OnEnable()
+        {
+            isAlive = true;
+        }
+        public void OnDisable()
+        {
+            isAlive = false;
+        }
         private void OnTriggerEnter(Collider other)
         {
             // If collided with a bullet and not already in the dying process
@@ -24,7 +33,6 @@ namespace SpaceInvaders
                 HandleDeath();
             }
         }
-
         private void HandleDeath()
         {
             // Disable the alien (make it invisible)

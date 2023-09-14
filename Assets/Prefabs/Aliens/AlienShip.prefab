@@ -3345,6 +3345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 5252387841512508377, guid: 8a2bbb10f6c2dce4e93c1c799419771d, type: 3}
   explosionDuration: 0.5
+  shootingInterval: 0.5
   spawnableType: 8
 --- !u!1 &4299363445732489988
 GameObject:
