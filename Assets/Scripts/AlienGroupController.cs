@@ -51,8 +51,17 @@ namespace SpaceInvaders
         {
             //spawnedAliens.alienCount these are the starting amount of aliens.
             currentAlienCount--;
-            //Recalculate the speed constant, we start the constant at 1 and as it gets closer to 0, the faster the aliens will go
-            Signals.Get<Project.Game.SetSpeedSignal>().Dispatch(CalculateSpeedConstant());
+
+            if (currentAlienCount == 0) //go to the next level
+            {
+                OnResetGame();
+                Signals.Get<Project.Game.LoadNextLevelSignal>().Dispatch();
+            }
+            else
+            {
+                //Recalculate the speed constant, we start the constant at 1 and as it gets closer to 0, the faster the aliens will go
+                Signals.Get<Project.Game.SetSpeedSignal>().Dispatch(CalculateSpeedConstant());
+            }
         }
         private void OnMoveAlienCompleted()
         {
@@ -129,7 +138,6 @@ namespace SpaceInvaders
 
             return null;  // No alive aliens in this column
         }
-
         public void OnResetGame()
         {
             _boundary = null;

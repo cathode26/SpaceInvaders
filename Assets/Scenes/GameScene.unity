@@ -3913,6 +3913,17 @@ MonoBehaviour:
   alienWidthOffsetPercentage: 0.2
   numberOfRows: 10
   numberOfColumns: 10
+  levels:
+  - {fileID: 11400000, guid: 0b2852b4dec152144afe494d898cb5fb, type: 2}
+  - {fileID: 11400000, guid: dc6a23ee906b8874bb5a4508934bdfe8, type: 2}
+  - {fileID: 11400000, guid: 5a0960738577bb545b38133adbb46bdc, type: 2}
+  - {fileID: 11400000, guid: 1b860404b6f498542a870d83347bd7c1, type: 2}
+  - {fileID: 11400000, guid: d8f4119ad415c2a44844ca8536697477, type: 2}
+  - {fileID: 11400000, guid: 40f9dde5eb16c494e806b34d129bc037, type: 2}
+  - {fileID: 11400000, guid: 218fcf5f7e3607b43a93ea688be24dbc, type: 2}
+  - {fileID: 11400000, guid: ebb01e4ad71096740a5e002cce1db0b1, type: 2}
+  - {fileID: 11400000, guid: f310e2dee2dba234da22111ac665f75b, type: 2}
+  - {fileID: 11400000, guid: ccd4cb91211222c42bb6cea1fd20646b, type: 2}
 --- !u!114 &1517425372
 MonoBehaviour:
   m_ObjectHideFlags: 0

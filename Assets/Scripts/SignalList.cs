@@ -18,6 +18,7 @@ namespace SpaceInvaders
         public class ScoreUpdatedSignal : ASignal<int> { }
         public class HighScoreUpdatedSignal : ASignal<int> { }
         public class LivesChangedSignal : ASignal<int> { }
+        public class LoadNextLevelSignal : ASignal { }
     }
 
     namespace Project.SceneManager

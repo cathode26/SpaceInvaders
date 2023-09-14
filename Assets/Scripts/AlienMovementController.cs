@@ -22,7 +22,7 @@ namespace SpaceInvaders
         private float _curMoveTime = 0.0f;
         private int _moveDuration = 100;
         private Vector3 _startingPosition;
-        private float _downDistance = 0.05f;  // Distance invaders move down when changing direction
+        private float _downDistance = 0.25f;  // Distance invaders move down when changing direction
         private int _pauseDuration = 400;  // ms Time between each movement "step"
         private float _curPauseTime = 0.0f;
         private int _randomStart = 50;
@@ -98,12 +98,12 @@ namespace SpaceInvaders
                 _curDownMoveTime += Time.deltaTime;
                 _curPauseTime = _curDownMoveTime;
 
-                if (_curDownMoveTime >= ((_speed) * (_downMoveDuration / 1000.0f)))
+                if (_curDownMoveTime >= _downMoveDuration / 1000.0f)
                 {
                     _currentState = AlienMoveState.FINAL_PAUSE;
                     _curDownMoveTime = _downMoveDuration / 1000.0f;
                 }
-                float distance = (_curDownMoveTime / ((_speed) * (_downMoveDuration / 1000.0f))) * _downDistance;
+                float distance = (_curDownMoveTime / ((_downMoveDuration / 1000.0f))) * _downDistance;
                 transform.position = new Vector3(_startingPosition.x, _startingPosition.y - distance, _startingPosition.z);
             }
             else
