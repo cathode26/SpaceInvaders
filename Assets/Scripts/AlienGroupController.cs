@@ -42,9 +42,17 @@ namespace SpaceInvaders
             this.spawnedAliens = spawnedAliens;
             currentAlienCount = spawnedAliens.alienCount;
         }
+        private float CalculateSpeedConstant()
+        {
+            float speed =  1 - Mathf.Lerp(1, 0, (float)currentAlienCount / spawnedAliens.alienCount);
+            return speed;
+        }
         private void OnAlienKilled()
         {
+            //spawnedAliens.alienCount these are the starting amount of aliens.
             currentAlienCount--;
+            //Recalculate the speed constant, we start the constant at 1 and as it gets closer to 0, the faster the aliens will go
+            Signals.Get<Project.Game.SetSpeedSignal>().Dispatch(CalculateSpeedConstant());
         }
         private void OnMoveAlienCompleted()
         {
@@ -56,8 +64,10 @@ namespace SpaceInvaders
                     Signals.Get<Project.Game.DirectionReversedSignal>().Dispatch();
                     aliensReachedBoundary = false;
                 }
-                
-                Signals.Get<Project.Game.MoveAlienSignal>().Dispatch();
+                else
+                {
+                    Signals.Get<Project.Game.MoveAlienSignal>().Dispatch();
+                }
                 aliensMoved = 0;
             }
         }

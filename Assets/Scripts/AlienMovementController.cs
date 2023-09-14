@@ -34,7 +34,7 @@ namespace SpaceInvaders
         private float _curDownMoveTime = 0.0f;
 
         private int _initialPauseDuration = 500;  // ms Store the initial pause duration for speed increase logic
-
+        private float _speed = 1;
         public bool IsAlive() { return _isAlive; }
 
         private List<AlienMovementController> _siblingAliens;
@@ -49,6 +49,7 @@ namespace SpaceInvaders
         private void Reset()
         {
             _isAlive = true;
+            _speed = 1.0f;
             _curPauseTime = 0.0f;
             _curStartMoveTime = 0.0f;
             _moveDirection = -1;
@@ -63,11 +64,13 @@ namespace SpaceInvaders
             GatherSiblingsAndSetOwnIndex();
             Signals.Get<Project.Game.MoveAlienSignal>().AddListener(OnMoveAlien);
             Signals.Get<Project.Game.DirectionReversedSignal>().AddListener(OnDirectionReversed);
+            Signals.Get<Project.Game.SetSpeedSignal>().AddListener(OnSetSpeed);
         }
         private void OnDisable()
         {
             Signals.Get<Project.Game.MoveAlienSignal>().RemoveListener(OnMoveAlien);
             Signals.Get<Project.Game.DirectionReversedSignal>().RemoveListener(OnDirectionReversed);
+            Signals.Get<Project.Game.SetSpeedSignal>().RemoveListener(OnSetSpeed);
         }
         private void Update()
         {
@@ -75,19 +78,19 @@ namespace SpaceInvaders
             {
                 _curStartMoveTime += Time.deltaTime;
                 _curPauseTime = _curStartMoveTime;
-                if (_curStartMoveTime >= _startMoveDuration / 1000.0f)
+                if (_curStartMoveTime >= (_speed)*(_startMoveDuration / 1000.0f))
                     _currentState = AlienMoveState.MOVING_HORIZONTAL;
             }
             else if (_currentState == AlienMoveState.MOVING_HORIZONTAL)
             {
                 _curMoveTime += Time.deltaTime;
                 _curPauseTime = _curStartMoveTime;
-                if (_curMoveTime >= _moveDuration / 1000.0f)
+                if (_curMoveTime >= (_speed)*(_moveDuration / 1000.0f))
                 {
                     _currentState = AlienMoveState.FINAL_PAUSE;
-                    _curMoveTime = _moveDuration / 1000.0f;
+                    _curMoveTime = (_speed) * (_moveDuration / 1000.0f);
                 }
-                float distance = (_curMoveTime / (_moveDuration / 1000.0f)) * _moveDirection * _moveDistance;
+                float distance = (_curMoveTime / ((_speed)*(_moveDuration / 1000.0f))) * _moveDirection * _moveDistance;
                 transform.position = new Vector3(_startingPosition.x + distance, _startingPosition.y, _startingPosition.z);
             }
             else if(_currentState == AlienMoveState.MOVING_DOWN)
@@ -95,23 +98,27 @@ namespace SpaceInvaders
                 _curDownMoveTime += Time.deltaTime;
                 _curPauseTime = _curDownMoveTime;
 
-                if (_curDownMoveTime >= _downMoveDuration / 1000.0f)
+                if (_curDownMoveTime >= ((_speed) * (_downMoveDuration / 1000.0f)))
                 {
                     _currentState = AlienMoveState.FINAL_PAUSE;
                     _curDownMoveTime = _downMoveDuration / 1000.0f;
                 }
-                float distance = (_curDownMoveTime / (_downMoveDuration / 1000.0f)) * _downDistance;
+                float distance = (_curDownMoveTime / ((_speed) * (_downMoveDuration / 1000.0f))) * _downDistance;
                 transform.position = new Vector3(_startingPosition.x, _startingPosition.y - distance, _startingPosition.z);
             }
             else
             {
                 _curPauseTime += Time.deltaTime;
-                if (_curPauseTime >= _pauseDuration / 1000.0f)
+                if (_curPauseTime >= (_speed) * (_pauseDuration / 1000.0f))
                 {
                     _currentState = AlienMoveState.STATIONARY;
                     Signals.Get<Project.Game.MoveAlienCompletedSignal>().Dispatch();
                 }
             }
+        }
+        private void OnSetSpeed(float speed)
+        {
+            _speed = speed;
         }
         private void OnTriggerEnter(Collider collider)
         {

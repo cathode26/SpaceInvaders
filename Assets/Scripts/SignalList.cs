@@ -8,6 +8,7 @@ namespace SpaceInvaders
         public class MoveAlienSignal : ASignal { }
         public class MoveAlienCompletedSignal : ASignal { }
         public class DirectionReversedSignal : ASignal { }
+        public class SetSpeedSignal : ASignal<float> { }
         public class AlienReachedBoundarySignal : ASignal<Boundary> { }
         public class NoMoreLivesSignal : ASignal { }
         public class LoadGameSignal : ASignal { }
