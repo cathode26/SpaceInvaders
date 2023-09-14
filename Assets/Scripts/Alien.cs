@@ -54,6 +54,7 @@ namespace SpaceInvaders
 
             // Return yourself the alien after the explosion ends
             ObjectPooler.Instance.ReturnObject(spawnableType, gameObject);
+            Signals.Get<Project.Game.AlienKilled>().Dispatch();
         }
         public void Shoot()
         {

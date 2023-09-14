@@ -19,6 +19,7 @@ namespace SpaceInvaders
 
         public List<Pool> pools;
         private Dictionary<SpawnableType, Queue<GameObject>> poolDictionary;
+        private Dictionary<(SpawnableType, GameObject), Coroutine> activeReturnCoroutines = new Dictionary<(SpawnableType, GameObject), Coroutine>();
 
         private void Awake()
         {
@@ -60,11 +61,33 @@ namespace SpaceInvaders
 
             return objectToSpawn;
         }
+        
+        // Modified ReturnAfterDelay
+        private IEnumerator ReturnAfterDelay(SpawnableType type, GameObject obj, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            activeReturnCoroutines.Remove((type,obj));  // Remove from active coroutines when done
+
+            obj.SetActive(false);
+            poolDictionary[type].Enqueue(obj);
+        }
+
+        // Modified ReturnObject
         public void ReturnObject(SpawnableType type, GameObject obj, float delay = 0f)
         {
             if (delay > 0f)
             {
-                StartCoroutine(ReturnAfterDelay(type, obj, delay));
+                // If there's an active coroutine for this object, stop it first
+                if (activeReturnCoroutines.ContainsKey((type,obj)))
+                {
+                    StopCoroutine(activeReturnCoroutines[(type,obj)]);
+                    activeReturnCoroutines.Remove((type, obj));
+                }
+
+                // Start the coroutine and store it in the dictionary
+                Coroutine coroutine = StartCoroutine(ReturnAfterDelay(type, obj, delay));
+                activeReturnCoroutines.Add((type,obj), coroutine);
             }
             else
             {
@@ -72,12 +95,22 @@ namespace SpaceInvaders
                 poolDictionary[type].Enqueue(obj);
             }
         }
-        private IEnumerator ReturnAfterDelay(SpawnableType type, GameObject obj, float delay)
+
+        // New method to immediately return all objects being delayed
+        public void ImmediateReturnAllDelayedObjects()
         {
-            yield return new WaitForSeconds(delay);
-            obj.SetActive(false);
-            poolDictionary[type].Enqueue(obj);
+            foreach (var entry in activeReturnCoroutines)
+            {
+                (SpawnableType type, GameObject obj) pair = entry.Key;
+                StopCoroutine(entry.Value);  // Stop the delay coroutine
+
+                pair.obj.SetActive(false);
+                poolDictionary[pair.type].Enqueue(pair.obj);
+            }
+
+            activeReturnCoroutines.Clear();
         }
+
         public BoxCollider GetBoxCollider(SpawnableType spawnableType)
         {
             Pool pool = pools.Find( obj => obj.type == spawnableType );

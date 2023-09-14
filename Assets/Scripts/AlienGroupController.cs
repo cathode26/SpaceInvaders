@@ -15,6 +15,7 @@ namespace SpaceInvaders
         private float shootingTimer = 0f; // The next time when an alien will shoot
         Alien nextShootingAlien;
         bool aliensReachedBoundary = false;
+        int currentAlienCount;
 
         void Start()
         {
@@ -26,6 +27,7 @@ namespace SpaceInvaders
             Signals.Get<Project.Game.AlienReachedBoundarySignal>().AddListener(OnAlienReachedBoundary);
             Signals.Get<Project.Game.AliensSpawnedSignal>().AddListener(OnAliensSpawned);
             Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
+            Signals.Get<Project.Game.AlienKilled>().AddListener(OnAlienKilled);
         }
         private void OnDisable()
         {
@@ -33,15 +35,21 @@ namespace SpaceInvaders
             Signals.Get<Project.Game.AlienReachedBoundarySignal>().RemoveListener(OnAlienReachedBoundary);
             Signals.Get<Project.Game.AliensSpawnedSignal>().RemoveListener(OnAliensSpawned);
             Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
+            Signals.Get<Project.Game.AlienKilled>().RemoveListener(OnAlienKilled);
         }
         private void OnAliensSpawned(SpawnedAliens spawnedAliens)
         {
             this.spawnedAliens = spawnedAliens;
+            currentAlienCount = spawnedAliens.alienCount;
+        }
+        private void OnAlienKilled()
+        {
+            currentAlienCount--;
         }
         private void OnMoveAlienCompleted()
         {
             aliensMoved++;
-            if (aliensMoved >= spawnedAliens.alienCount)
+            if (aliensMoved >= currentAlienCount)
             {
                 if (aliensReachedBoundary)
                 {

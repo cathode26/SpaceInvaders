@@ -92,6 +92,7 @@ namespace SpaceInvaders
             if (gameStarted)
             {
                 gameStarted = false;
+                ObjectPooler.Instance.ImmediateReturnAllDelayedObjects();
                 Signals.Get<Project.SceneManager.ResetGameSignal>().Dispatch();
             }
         }

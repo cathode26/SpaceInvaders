@@ -12,6 +12,7 @@ namespace SpaceInvaders
         public class NoMoreLivesSignal : ASignal { }
         public class LoadGameSignal : ASignal { }
         public class ResetGameSignal : ASignal { }
+        public class AlienKilled : ASignal { }
     }
 
     namespace Project.SceneManager
