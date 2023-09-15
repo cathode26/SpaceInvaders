@@ -48,8 +48,8 @@ namespace SpaceInvaders
         private void OnDestroy()
         {
             Signals.Get<Project.HighScores.OnBackPressedSignal>().RemoveListener(OnHighScoresBackPressed);
-            Signals.Get<Project.SceneManager.GamePausedSignal>().AddListener(OnGamePaused);
-            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
+            Signals.Get<Project.SceneManager.GamePausedSignal>().RemoveListener(OnGamePaused);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
         }
         private void OnHighScoresBackPressed()
         {

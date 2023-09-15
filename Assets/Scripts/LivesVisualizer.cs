@@ -16,7 +16,7 @@ namespace SpaceInvaders
         private void OnDisable()
         {
             Signals.Get<Project.Game.LivesChangedSignal>().RemoveListener(OnLivesChanged);
-            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
         }
 
         private void Start()
