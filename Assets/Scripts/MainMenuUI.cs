@@ -1,6 +1,7 @@
 using deVoid.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SpaceInvaders
@@ -48,8 +49,8 @@ namespace SpaceInvaders
         private void OnDestroy()
         {
             Signals.Get<Project.HighScores.OnBackPressedSignal>().RemoveListener(OnHighScoresBackPressed);
-            Signals.Get<Project.SceneManager.GamePausedSignal>().AddListener(OnGamePaused);
-            Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
+            Signals.Get<Project.SceneManager.GamePausedSignal>().RemoveListener(OnGamePaused);
+            Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
         }
         private void OnHighScoresBackPressed()
         {
@@ -68,6 +69,7 @@ namespace SpaceInvaders
             buttonText.text = "PLAY";
             quitButton.interactable = false;
             ui.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null); // Clear selected UI element
         }
     }
 }

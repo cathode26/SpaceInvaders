@@ -1,3 +1,4 @@
+using deVoid.Utils;
 using System;
 using UnityEngine;
 
@@ -8,13 +9,13 @@ namespace SpaceInvaders
         public static GameInput Instance { get; private set; } // Singleton instance of the GameInput class
         [SerializeField]
         private PlayerInputActions playerInputActions;
+        private bool escapeEnabled = true;
         //EventHandler is the built in C# standard for delegate
         //Event that is triggered when the player performs the interaction action (presses "E").
         public event EventHandler OnInteractAction;
         //Event that is triggered when the player performs the interaction action (presses "F").
         public event EventHandler OnInteractAlternativeAction;
         public event EventHandler OnPauseAction;
-
         private void Awake()
         {
             Instance = this;
@@ -25,13 +26,16 @@ namespace SpaceInvaders
             //Here, the input system is initialized and the Interact action is set up to trigger the OnInteractAction event when performed.
             playerInputActions.Player.Interact.performed += InteractPerformed;
 
-            playerInputActions.Player.Pause.performed += PausePerformed;
+            playerInputActions.Player.Pause.performed += Pause_performed;
+            Signals.Get<Project.Input.OnEnableEscapeSignal>().AddListener(OnEnableEscape);
+
         }
         private void OnDestroy()
         {
             playerInputActions.Player.Interact.performed -= InteractPerformed;
-            playerInputActions.Player.Pause.performed -= PausePerformed;
+            playerInputActions.Player.Pause.performed -= Pause_performed;
             playerInputActions.Dispose();
+            Signals.Get<Project.Input.OnEnableEscapeSignal>().AddListener(OnEnableEscape);
         }
         private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
@@ -45,9 +49,14 @@ namespace SpaceInvaders
             bool moved = playerInputActions.Player.Move.IsPressed();
             return (moved, inputVector);
         }
-        private void PausePerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        private void Pause_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
         {
-            OnPauseAction?.Invoke(this, EventArgs.Empty);
+            if(escapeEnabled)
+                OnPauseAction?.Invoke(this, EventArgs.Empty);
+        }
+        private void OnEnableEscape(bool enable)
+        {
+            escapeEnabled = enable;
         }
     }
 }

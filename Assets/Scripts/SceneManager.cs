@@ -30,7 +30,19 @@ namespace SpaceInvaders
         //  The GameInputOnInteractAction event is called from the GameInput when the user presses space
         private void OnGameInputPause(object sender, System.EventArgs e)
         {
-            TogglePauseGame();
+            if (gameStarted)
+            {
+                if (gamePaused)
+                {
+                    OnPlayOrResume();
+                }
+                else
+                {
+                    Time.timeScale = 0;
+                    gamePaused = true;
+                }
+                Signals.Get<Project.SceneManager.GamePausedSignal>().Dispatch(gamePaused);
+            }
         }
 
         public void OnPlayOrResume()
@@ -59,23 +71,8 @@ namespace SpaceInvaders
                 gameStarted = false;
                 ObjectPooler.Instance.ImmediateReturnAllDelayedObjects();
                 Signals.Get<Project.SceneManager.ResetGameSignal>().Dispatch();
+                Signals.Get<Project.SceneManager.OnResetGameCompleteSignal>().Dispatch();
                 Time.timeScale = 1;
-            }
-        }
-        public void TogglePauseGame()
-        {
-            if (gameStarted)
-            {
-                if (gamePaused)
-                {
-                    OnPlayOrResume();
-                }
-                else
-                {
-                    Time.timeScale = 0;
-                    gamePaused = true;
-                }
-                Signals.Get<Project.SceneManager.GamePausedSignal>().Dispatch(gamePaused);
             }
         }
     }
