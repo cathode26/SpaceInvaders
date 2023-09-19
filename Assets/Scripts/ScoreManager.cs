@@ -43,6 +43,7 @@ namespace SpaceInvaders
         }
         private void OnResetGameComplete()
         {
+            SaveHighScores();
             if (CurrentScore > 0 && (CurrentScore > LowestHighScore || _highScores.Count < 10))
                 Signals.Get<Project.MainMenu.OnHighScoresPressedSignal>().Dispatch();
         }
@@ -163,6 +164,7 @@ namespace SpaceInvaders
         {
             SavedName = playerName;
             _highScores[SavedRank - 1] = (SavedName, _highScores[SavedRank - 1].score);
+            SaveHighScores();
         }
     }
 }

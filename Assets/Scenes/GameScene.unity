@@ -263,7 +263,6 @@ MonoBehaviour:
   nameTemplate: {fileID: 1616108956}
   scoreTemplate: {fileID: 1156603039}
   inputFieldTemplate: {fileID: 910062138}
-  maxNameWidth: 360
 --- !u!1 &58705275
 GameObject:
   m_ObjectHideFlags: 0
@@ -1405,7 +1404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &536865405
 RectTransform:
   m_ObjectHideFlags: 0
