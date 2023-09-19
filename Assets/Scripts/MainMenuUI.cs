@@ -1,6 +1,7 @@
 using deVoid.Utils;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace SpaceInvaders
@@ -68,6 +69,7 @@ namespace SpaceInvaders
             buttonText.text = "PLAY";
             quitButton.interactable = false;
             ui.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null); // Clear selected UI element
         }
     }
 }

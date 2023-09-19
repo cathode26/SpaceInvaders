@@ -63,9 +63,6 @@ namespace SpaceInvaders
         //  The GameInputOnInteractAction event is called from the GameInput when the user presses space
         private void GameInputOnInteractAction(object sender, System.EventArgs e)
         {
-            //Check for null operator ?
-            //selectedCounter?.Interact(this);
-            //Shoot the weapon
             HandleShoot();
         }
         private void Update()
@@ -174,10 +171,7 @@ namespace SpaceInvaders
         private void GameOver()
         {
             // Pause the game
-            
             Signals.Get<Project.Game.NoMoreLivesSignal>().Dispatch();
-
-            // TODO: Show GameOver UI or any other related logic.
         }
     }
 }

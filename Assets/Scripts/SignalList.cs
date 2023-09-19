@@ -28,6 +28,7 @@ namespace SpaceInvaders
         public class MainMenuSignal : ASignal { }
         public class GamePausedSignal : ASignal<bool> { }
         public class ResetGameSignal : ASignal { }
+        public class OnResetGameCompleteSignal : ASignal { }
     }
 
     namespace Project.HighScores
@@ -39,6 +40,10 @@ namespace SpaceInvaders
         public class PlaySignal : ASignal { }
         public class QuitSignal : ASignal { }
         public class OnHighScoresPressedSignal : ASignal { }
+    }
+    namespace Project.Input
+    {
+        public class OnEnableEscapeSignal : ASignal<bool> { }
     }
 }
 
