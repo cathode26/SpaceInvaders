@@ -35,14 +35,14 @@ namespace SpaceInvaders
             playerInputActions.Player.Interact.performed -= InteractPerformed;
             playerInputActions.Player.Pause.performed -= Pause_performed;
             playerInputActions.Dispose();
-            Signals.Get<Project.Input.OnEnableEscapeSignal>().AddListener(OnEnableEscape);
+            Signals.Get<Project.Input.OnEnableEscapeSignal>().RemoveListener(OnEnableEscape);
         }
         private void InteractPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             //? null condition operator, followed by Invoke, because you can't put the function parenthesis after the ? null condition operator
             OnInteractAction?.Invoke(this, EventArgs.Empty);
         }
-        public (bool, Vector2) GetMovementVectorNormalized()
+        public (bool moved, Vector2 direction) GetMovementVectorNormalized()
         {
             //This method retrieves the direction of the movement from the input system and checks whether the movement action is currently being performed (i.e., the movement keys are being pressed).
             Vector2 inputVector = playerInputActions.Player.Move.ReadValue<Vector2>();

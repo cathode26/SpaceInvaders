@@ -14,10 +14,20 @@ namespace SpaceInvaders
         private TextMeshProUGUI livesText;
         [SerializeField]
         GameObject ui;
+        [SerializeField]
+        GameObject mobileUI;
 
         private int highScore;
         private int score;
         private int lives = 3;
+
+        private void Awake()
+        {
+            if (Application.isMobilePlatform || Application.isEditor)
+                mobileUI.SetActive(true);
+            else
+                mobileUI.SetActive(false);
+        }
 
         private void OnEnable()
         {

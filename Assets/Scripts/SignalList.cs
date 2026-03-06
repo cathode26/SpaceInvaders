@@ -44,6 +44,9 @@ namespace SpaceInvaders
     namespace Project.Input
     {
         public class OnEnableEscapeSignal : ASignal<bool> { }
+        public class OnHandleShootSignal : ASignal { }
+        public class OnLeftButtonSignal : ASignal<bool> { }
+        public class OnRightButtonSignal : ASignal<bool> { }
     }
 }
 

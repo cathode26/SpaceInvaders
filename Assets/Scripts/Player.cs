@@ -28,6 +28,9 @@ namespace SpaceInvaders
         private int playerLives = 3; // player's initial lives
         private Vector3 startingPosition;
         private int startingLives;
+        private Vector2 movementInput = Vector2.zero;
+        private bool leftHeld = false;
+        private bool rightHeld = false;
 
         private void Awake()
         {
@@ -41,10 +44,16 @@ namespace SpaceInvaders
             startingPosition = transform.position;
             _boxCollider = GetComponent<BoxCollider>();
             Signals.Get<Project.SceneManager.ResetGameSignal>().AddListener(OnResetGame);
+            Signals.Get<Project.Input.OnHandleShootSignal>().AddListener(HandleShoot);
+            Signals.Get<Project.Input.OnLeftButtonSignal>().AddListener(HandleLeftButton);
+            Signals.Get<Project.Input.OnRightButtonSignal>().AddListener(HandleRightButton);
         }
         private void OnDestroy()
         {
             Signals.Get<Project.SceneManager.ResetGameSignal>().RemoveListener(OnResetGame);
+            Signals.Get<Project.Input.OnHandleShootSignal>().RemoveListener(HandleShoot);
+            Signals.Get<Project.Input.OnLeftButtonSignal>().RemoveListener(HandleLeftButton);
+            Signals.Get<Project.Input.OnRightButtonSignal>().RemoveListener(HandleRightButton);
         }
         private void OnResetGame()
         {
@@ -70,6 +79,34 @@ namespace SpaceInvaders
             //Handles player movement according to user input.
             HandleMovement();
         }
+        private void HandleLeftButton(bool isDown)
+        {
+            leftHeld = isDown;
+            RefreshMovementInput();
+        }
+
+        private void HandleRightButton(bool isDown)
+        {
+            rightHeld = isDown;
+            RefreshMovementInput();
+        }
+
+        private void RefreshMovementInput()
+        {
+            if (leftHeld == rightHeld)
+                movementInput.x = 0;
+            else if (leftHeld)
+                movementInput.x = -1;
+            else
+                movementInput.x = 1;
+        }
+        private (bool moved, Vector2 direction) GetMovementVectorNormalized()
+        {
+            if(movementInput.x != 0)
+                return (true, movementInput);
+            else
+                return (false, movementInput);
+        }
         private void HandleShoot()
         {
             GameObject bullet = ObjectPooler.Instance.RequestObject(SpawnableType.PlayerBullet, bulletSpawnLocation.position, Quaternion.identity);
@@ -79,10 +116,15 @@ namespace SpaceInvaders
         private void HandleMovement()
         {
             //Controls the movement and rotation of the player according to user input.
-            (bool moved, Vector2 movDir) movementData = gameInput.GetMovementVectorNormalized();
+            (bool moved, Vector2 movDir) movementData;
+            if (Application.isMobilePlatform || Application.isEditor)
+                movementData = GetMovementVectorNormalized();
+            else
+                movementData = gameInput.GetMovementVectorNormalized();
 
             if (movementData.moved)
             {
+                Debug.Log("movementData.movDir " + movementData.movDir);
                 bool canMove = DetermineMovementAbility(movementData.movDir);
                 if (canMove)
                 {
